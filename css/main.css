@@ -1,5 +1,5 @@
 body {
-    //background-image: url("bg.jpg");
+    background: white;
     width: 960px;
     margin: auto auto auto auto;
     font-family: 'Gloria Hallelujah', cursive;
@@ -25,3 +25,12 @@ body {
     border-radius: 15px;
     text-decoration: blink;
 }
+
+#share {
+    color: white;
+    background: #A183AD;
+    padding: 10px;
+    border-radius: 15px;
+    text-decoration: blink;
+}
+

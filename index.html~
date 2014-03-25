@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+    <!--<link href="http://fonts.googleapis.com/css?family=Lemon" rel="stylesheet" type="text/css">-->
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+  </head>
+  <body>
+    <h1>The Random Proposal Generator</h1>
+    <div id="proposal"></div>
+    <div id="regenerate">
+      <a id="button">Hit Me!</a>
+    </div>
+    <script type="text/javascript" src="js/generator.js"></script>
+  </body>
+</html>

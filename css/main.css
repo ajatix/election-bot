@@ -1,0 +1,27 @@
+body {
+    //background-image: url("bg.jpg");
+    width: 960px;
+    margin: auto auto auto auto;
+    font-family: 'Gloria Hallelujah', cursive;
+    font-size: 1.8em;
+    text-align: center;
+}
+
+#title {
+    font-size: 2em;
+}
+
+#proposal {
+    padding: 40px;
+    color: #0F96DC;
+    font-size: 1.2em;
+    display: none;
+}
+
+#button {
+    color: #FFFFFF;
+    background: #0F96DC;
+    padding: 10px;
+    border-radius: 15px;
+    text-decoration: blink;
+}

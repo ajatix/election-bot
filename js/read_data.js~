@@ -1,0 +1,3 @@
+$.getJSON('data.json', function(data) {
+    $.("#proposal").text(data[0].Proposal);
+}

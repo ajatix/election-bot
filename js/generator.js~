@@ -1,0 +1,49 @@
+$.get('data/data.txt', function(data) {
+
+$.get('data/data.txt', function(data) {
+    var words = [];
+var splitter = " ";
+});
+
+$("#button").click(function() {
+    $("#proposal").fadeOut();
+    $("#proposal").text(generate(data, 3)).fadeIn();
+});
+
+calcProbs = function(text, order) {
+    var chain, i, probs, _i, _ref;
+    probs = {};
+    text = text.replace(/\r\n|\n|\r|  /gm, " ");
+    words = text.split(splitter);
+    for (i = _i = 0, _ref = words.length - order + 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+        chain = words.slice(i, i + order - 1);
+        if (!(probs[chain] != null)) {
+            probs[chain] = [];
+        }
+        probs[chain].push(words[i + order - 1]);
+    }
+    return probs;
+};
+
+generate = function(text, order) {
+    var chain, nextWord, output, probs, startPos, _ref;
+    probs = calcProbs(text, order);
+    nextWord = "";
+    output = "";
+    startPos = 1;
+    while (words[startPos - 1].substr(-1) !== ".") {
+        startPos = Math.floor(Math.random() * (words.length - order - 1) + 1);
+    }
+    chain = words.slice(startPos, +(startPos + order - 2) + 1 || 9e9);
+    output = chain.join(splitter);
+    while ((_ref = nextWord.substr(-1)) !== '.' && _ref !== '!' && _ref !== '?') {
+        nextWord = probs[chain][Math.floor(probs[chain].length * Math.random())];
+        output = output + splitter + nextWord;
+        chain.push(nextWord);
+        chain = chain.slice(1);
+    }
+    return output;
+};
+
+
+

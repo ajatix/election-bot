@@ -1,5 +1,15 @@
 (function() {
-    var AliceVShaney, dataLoadedHandler;
+    var AliceVShaney, dataLoadedHandler, hash_prop;
+
+	//Full address of a page = (base_address) + (#! delimiter) + (encoded proposal)
+    var full_url = document.URL;
+    var share_url = full_url.split("#!/")[1]; //The shared-part of the URL used for IDing
+    //Display proposal only if from proposal-shared link.
+    if(share_url){
+    	share_url = decodeURI(share_url);
+		prop = share_url.split("").reverse().join(""); //The share-url is simply the reverse of the proposal-text, but URI encoded.
+		$("#proposal").text(prop).fadeIn("slow");
+    }
 
     $("#button").click(function() {
 	$("#proposal").hide(0);
@@ -9,6 +19,19 @@
     dataLoadedHandler = function(data) {
 	return $("#proposal").text(AliceVShaney.generate(data, 3)).fadeIn("slow");
     };
+
+    $("#share").click(function(){
+    	var prop = $("#proposal").text();
+    	if (prop != "") {
+    		var encoded_url = AliceVShaney.encode_prop(prop);
+    		//Currently sets the share-able link in the nav bar. 
+    		// Ajay => You might want to display it in a small pop-up for better effect
+    		//Full address = (base_address) + (#! delimiter) + (encoded proposal)
+    		location.href = (location.href).split("#!/")[0] + "#!/" +encoded_url;
+    	}
+		
+	});
+	
 
     AliceVShaney = (function() {
 
@@ -32,6 +55,18 @@
 	    }
 	    return probs;
 	};
+
+	AliceVShaney.encode_prop = function(prop){
+		prop = prop.split("").reverse().join("");
+		prop = encodeURI(prop);
+		return prop;
+	}
+
+	AliceVShaney.decode_prop = function(share_url){
+		share_url = decodeURI(share_url);
+		prop = share_url.split("").reverse().join("");
+		return prop;
+	}
 
 	AliceVShaney.generate = function(text, order) {
 	    var chain, nextWord, output, probs, startPos, _ref;

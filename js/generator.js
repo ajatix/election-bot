@@ -1,60 +1,41 @@
-(function() {
-    var AliceVShaney, dataLoadedHandler;
+$('#button').click(function() {
+    $('#proposal').hide(0);
+    return $.get('data/data.txt', buttonHandler);
+});
 
-    $("#button").click(function() {
-	$("#proposal").hide(0);
-	return $.get("data/data.txt", dataLoadedHandler);
-    });
+buttonHandler = function(data) {
+    return $('#proposal').text(generateSentence(data,3)).fadeIn('slow');
+};
 
-    dataLoadedHandler = function(data) {
-	return $("#proposal").text(AliceVShaney.generate(data, 3)).fadeIn("slow");
-    };
-
-    AliceVShaney = (function() {
-
-	function AliceVShaney() {}
-
-	AliceVShaney.words = [];
-
-	AliceVShaney.splitter = " ";
-
-	AliceVShaney.calcProbs = function(text, order) {
-	    var chain, i, probs, _i, _ref;
-	    probs = {};
-	    text = text.replace(/\r\n|\n|\r|  /gm, " ");
-	    this.words = text.split(this.splitter);
-	    for (i = _i = 0, _ref = this.words.length - order + 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
-		chain = this.words.slice(i, i + order - 1);
-		if (!(probs[chain] != null)) {
-		    probs[chain] = [];
-		}
-		probs[chain].push(this.words[i + order - 1]);
+buildDatabase = function(text, N) {
+    text = text.replace(/\r\n|\n|\r| /gm, " ");
+    sentences = text.split('. ');
+    table = {};
+    for (num=0; num<sentences.length; num++) {
+	words = sentences[num].split(' ');
+	for (i=0; i<words.length - N + 1; i++) {
+	    chain = words.slice(i,i + N - 1);
+	    if (table[chain] == null) {
+		table[chain] = [];
 	    }
-	    return probs;
-	};
+	    table[chain].push(words[i + N - 1]);
+	}
+    }
+    return table;
+};
 
-	AliceVShaney.generate = function(text, order) {
-	    var chain, nextWord, output, probs, startPos, _ref;
-	    probs = this.calcProbs(text, order);
-	    nextWord = "";
-	    output = "";
-	    startPos = 1;
-	    while (this.words[startPos - 1].substr(-1) !== ".") {
-		startPos = Math.floor(Math.random() * (this.words.length - order - 1) + 1);
-	    }
-	    chain = this.words.slice(startPos, +(startPos + order - 2) + 1 || 9e9);
-	    output = chain.join(this.splitter);
-	    while ((_ref = nextWord.substr(-1)) !== '.' && _ref !== '!' && _ref !== '?') {
-		nextWord = probs[chain][Math.floor(probs[chain].length * Math.random())];
-		output = output + this.splitter + nextWord;
-		chain.push(nextWord);
-		chain = chain.slice(1);
-	    }
-	    return output;
-	};
-
-	return AliceVShaney;
-
-    })();
-
-}).call(this);
+generateSentence = function(text, N) {
+    table = buildDatabase(text, N);
+    chain = ['I', 'propose'];
+    for (i=0; i< 40; i++) {
+	snip = chain.slice(i, i + N - 1);
+	if (table[snip] == null) {
+	    console.log(i);
+	    break;
+	}
+	next = table[snip][Math.floor(table[snip].length * Math.random())];
+	chain.push(next);
+    }
+    output = chain.join(' ');
+    return output;
+};
